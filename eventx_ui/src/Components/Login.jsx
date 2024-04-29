@@ -7,12 +7,24 @@ import {
   MDBIcon,
   MDBInput
 } from 'mdb-react-ui-kit';
+import ResetPassword from './ResetPassword';
+import ModalDialougePopUP from './ModalDialougePopUP';
 
 const Login = () => {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [showModal, setShowModal] = useState(false);
 
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+  
   const handleLogin = (e) => {
     e.preventDefault();
     // Validation
@@ -30,7 +42,7 @@ const Login = () => {
       // Perform login logic here
     }
   };
-
+  
   return (
     <MDBContainer fluid>
       <MDBRow>
@@ -69,9 +81,16 @@ const Login = () => {
             >
               Login
             </MDBBtn>
-            <p className="small mb-5 pb-lg-3 ms-5"><a className="text-muted" href="/resetPassword">Forgot password?</a></p>
+            
+            <p className="small mb-5 pb-lg-3 ms-5"><a className="text-muted" href="#!" onClick={openModal}>Forgot password?</a></p>
             <p className='ms-5'>Don't have an account? <a href="/register" className="link-info">Register here</a></p>
           </div>
+          <ModalDialougePopUP 
+            show={showModal} 
+            onClose={closeModal} 
+            title="Reset Password" 
+            bodyContent={<ResetPassword />} 
+          />
         </form>
         </MDBCol>
         <MDBCol sm='6' className='d-none d-sm-block px-0'>
