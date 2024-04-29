@@ -69,7 +69,7 @@ const Login = () => {
             >
               Login
             </MDBBtn>
-            <p className="small mb-5 pb-lg-3 ms-5"><a className="text-muted" href="/forgetPassword">Forgot password?</a></p>
+            <p className="small mb-5 pb-lg-3 ms-5"><a className="text-muted" href="/resetPassword">Forgot password?</a></p>
             <p className='ms-5'>Don't have an account? <a href="/register" className="link-info">Register here</a></p>
           </div>
         </form>

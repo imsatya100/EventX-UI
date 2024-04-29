@@ -7,6 +7,7 @@ import Navbar from './Components/NavBar';
 import Login from './Components/Login';
 import { Container } from 'react-bootstrap';
 import HomePage from './Components/HomePage';
+import ResetPassword from './Components/ResetPassword';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
              <Route path="/" element={<HomePage/>} />
              <Route path="/login" element={<Login/>} />
              <Route path="/register" element={<UserRegistration/>} />
+             <Route path="/resetPassword" element={<ResetPassword/>} />
           </Routes>
       </Container>
       <FooterComponent />
