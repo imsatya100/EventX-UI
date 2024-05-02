@@ -20,8 +20,8 @@ const ResetPassword = ({ show, onClose }) => {
 
   // Regular expression for email validation
   const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return pattern.test(email);
   };
 
   return (
@@ -32,7 +32,7 @@ const ResetPassword = ({ show, onClose }) => {
       {showAlert && <Alert variant="danger">{emailError}</Alert>}
       <Form method="post" onSubmit={handleSubmit}>
         <FormGroup>
-        <p class="my-2">Registered Email Address</p>
+        <p className="my-2">Registered Email Address</p>
           <MDBInput
               placeholder='Email Address'
               id='emailId'
@@ -40,7 +40,6 @@ const ResetPassword = ({ show, onClose }) => {
               size="lg"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              errormessage={emailError}
             />
           <label htmlFor="emailId" generated="true" id="emailIdError" className="error text-left"></label>
         </FormGroup>

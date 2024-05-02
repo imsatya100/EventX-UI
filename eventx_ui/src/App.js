@@ -8,10 +8,12 @@ import Login from './Components/Login';
 import { Container } from 'react-bootstrap';
 import HomePage from './Components/HomePage';
 import ResetPassword from './Components/ResetPassword';
-
+import { Provider } from 'react-redux';
+import store from './store';
 function App() {
-  return (
+    return (
     <div>
+      <Provider store={store}>
       <Router>
       <Navbar />
       <Container>
@@ -24,6 +26,7 @@ function App() {
       </Container>
       <FooterComponent />
      </Router>
+     </Provider>
     </div>
     
   );
