@@ -44,7 +44,7 @@ const ResetPassword = ({ show, onClose }) => {
           <label htmlFor="emailId" generated="true" id="emailIdError" className="error text-left"></label>
         </FormGroup>
         <div className="top-margin text-right">
-          <Button type="submit" variant="success">Reset</Button>
+          <Button type="submit" variant="primary">Reset</Button>
         </div>
       </Form>
     </div>

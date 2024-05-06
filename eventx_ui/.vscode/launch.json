@@ -5,16 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch localhost",
-            "type": "firefox",
+            "type": "chrome",
             "request": "launch",
-            "reAttach": true,
-            "url": "http://localhost/index.html",
-            "pathMappings": [{
-                "url": "http://localhost",
-                "path": "${workspaceFolder}"
-            }]
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}"
         }
     ]
-    
 }

@@ -9,15 +9,27 @@ import {
 import ResetPassword from './ResetPassword';
 import ModalDialougePopUP from './ModalDialougePopUP';
 import { Alert, Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const Login = () => {
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const message = '';
+  const message = useSelector(state => state.forwardMessage);
+  
+  const handleChange = (e) => {
+    setShowAlert(false);
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
   const openModal = () => {
     setShowModal(true);
   };
@@ -25,24 +37,45 @@ const Login = () => {
   const closeModal = () => {
     setShowModal(false);
   };
-  
+  const validateForm = () => {
+    if (!formData.email.trim()) {
+      setError('Email is required');
+      return false;
+    }
+    if (!/\S+@\S+\.\S+/.test(formData.email.trim())) {
+      setError('Invalid email format');
+      return false;
+    }
+    if (!formData.password.trim()) {
+      setError('Password is required');
+      return false;
+    }
+    setError('');
+    return true;
+  };
   const handleLogin = (e) => {
     e.preventDefault();
-    setShowAlert(false);
-    setError('');
-    // Validation
-    if (!email) {
-      setError('Email address is required');
-      setShowAlert(true);
-      return;
-    }
-    if (!password) {
-      setError('Password is required');
+    if (!validateForm()) {
       setShowAlert(true);
       return;
     }
     // If there are no errors, proceed with login
-    
+    console.log('Form Submitted:', formData);
+      try {
+        // Make POST request to your local URL
+        
+        const response = axios.post('http://localhost:8040/api/v1/users/login', formData);
+        setShowAlert(true)
+        if (response.status === 200) {
+          console.log('Login Successful:');
+        } else {
+          setError('Please enter correct username and password.');
+          
+        }
+      } catch (error) {
+        setShowAlert(true)
+        setError('An error occurred while processing your request.');
+      }
   };
   
   return (
@@ -65,8 +98,8 @@ const Login = () => {
               name='email'
               type='text'
               size="lg"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleChange}
             />
             <MDBInput
               wrapperClass='mb-4 mx-5 w-100'
@@ -75,8 +108,8 @@ const Login = () => {
               name='password'
               type='password'
               size="lg"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={handleChange}
             />
             <Button
               className="mb-4 px-5 mx-5 w-100"

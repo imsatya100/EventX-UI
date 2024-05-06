@@ -3,6 +3,9 @@ import { MDBContainer, MDBRow, MDBCol, MDBIcon, MDBInput } from 'mdb-react-ui-ki
 import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 import { Alert, Button } from 'react-bootstrap';
+import axios from 'axios';
+import { forwardMessage } from '../redux/actions';
+import { useDispatch } from 'react-redux';
 const UserRegistration = () => {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -15,6 +18,7 @@ const UserRegistration = () => {
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
   const [message, setMessage] = useState('');
+  const dispatch = useDispatch();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -30,7 +34,8 @@ const UserRegistration = () => {
     setErrorMsg('');
     setShowAlert(true);
     setMessage("User created successfully...");
-    navigate('/login',{ message: message});
+    dispatch(forwardMessage(message));
+    navigate('/login');
     
     if (!formData.firstName) {
       setErrorMsg('First Name is required');
@@ -64,23 +69,20 @@ const UserRegistration = () => {
     // You can also submit the form data to the server here
     setShowAlert(false);
     console.log('Form Submitted:', formData);
-      /* try {
+      try {
         // Make POST request to your local URL
         const response = axios.post('http://localhost:8040/api/v1/users', formData);
         // Handle success
         setMessage(response.data.message);
-        // Redirect to login page after successful registration
-        
       } catch (error) {
+        error.preventDefault = true;
         // Handle error
         setMessage(error.response.data.error);
-      } */
-      
+      }
+      dispatch(forwardMessage(message));
   };
 
-  
-
-  return (
+   return (
     <MDBContainer fluid>
     <MDBRow>
       <MDBCol sm='6'>

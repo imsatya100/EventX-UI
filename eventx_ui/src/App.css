@@ -17366,3 +17366,6 @@ pre[class*=language-] {
     background-color: rgba(54, 67, 72, 0.8);
   }
   
+  #webpack-dev-server-client-overlay {
+    display: none !important;
+  }
