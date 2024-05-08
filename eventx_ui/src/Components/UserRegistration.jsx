@@ -8,8 +8,7 @@ import { forwardMessage } from '../redux/actions';
 import { useDispatch } from 'react-redux';
 const UserRegistration = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword:'',
@@ -17,69 +16,63 @@ const UserRegistration = () => {
   const  [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
-  const [message, setMessage] = useState('');
   const dispatch = useDispatch();
   const handleChange = (e) => {
+    setShowAlert(false);
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
   };
-
+  const validateForm = () => {
+    if (!formData.name) {
+      setErrorMsg('Full Name is required');
+      return false;
+    }
+    if (!formData.email) {
+      setErrorMsg('Email is required');
+      return false;
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      setErrorMsg('Email is invalid');
+      return false;
+    }
+    if (!formData.password) {
+      setErrorMsg('Password is required');
+      return false;
+    } else if (formData.password.length < 8) {
+      setErrorMsg('Password must be at least 8 characters long');
+      return false;
+    }
+    if (!formData.confirmPassword) {
+      setErrorMsg('Please re-enter your password');
+      return false;
+    } else if (formData.password !== formData.confirmPassword) {
+      setErrorMsg('Passwords do not match');
+      return false;
+    }
+    setErrorMsg('');
+    return true;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Validate form data here (e.g., check if fields are not empty, valid email format, etc.)
-    setErrorMsg('');
-    setShowAlert(true);
-    setMessage("User created successfully...");
-    dispatch(forwardMessage(message));
-    navigate('/login');
-    
-    if (!formData.firstName) {
-      setErrorMsg('First Name is required');
+    if (!validateForm()) {
+      setShowAlert(true);
       return;
     }
-    if (!formData.lastName) {
-      setErrorMsg('Last Name is required');
-      return;
-    }
-    if (!formData.email) {
-      setErrorMsg('Email is required');
-      return;
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      setErrorMsg('Email is invalid');
-      return;
-    }
-    if (!formData.password) {
-      setErrorMsg('Password is required');
-      return;
-    } else if (formData.password.length < 8) {
-      setErrorMsg('Password must be at least 8 characters long');
-      return;
-    }
-    if (!formData.confirmPassword) {
-      setErrorMsg('Please re-enter your password');
-      return;
-    } else if (formData.password !== formData.confirmPassword) {
-      setErrorMsg('Passwords do not match');
-      return;
-    }
-    // You can also submit the form data to the server here
-    setShowAlert(false);
     console.log('Form Submitted:', formData);
       try {
         // Make POST request to your local URL
         const response = axios.post('http://localhost:8040/api/v1/users', formData);
         // Handle success
-        setMessage(response.data.message);
+        dispatch(forwardMessage(response.data.message));
+        navigate("/login");
       } catch (error) {
-        error.preventDefault = true;
-        // Handle error
-        setMessage(error.response.data.error);
+        setShowAlert(true);
+        setErrorMsg(error.response.data.error);
       }
-      dispatch(forwardMessage(message));
   };
 
    return (
@@ -95,22 +88,12 @@ const UserRegistration = () => {
           <h3 className="fw-normal mb-3 ps-5 pb-3" style={{ letterSpacing: '1px' }}>Register</h3>
           <MDBInput
             wrapperClass='mb-4 mx-5 w-100'
-            placeholder='First Name'
-            id='firstName'
-            name='firstName'
+            placeholder='Full Name'
+            id='name'
+            name='name'
             type='text'
             size="lg"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
-          <MDBInput
-            wrapperClass='mb-4 mx-5 w-100'
-            placeholder='Last Name'
-            id='lastName'
-            name='lastName'
-            type='text'
-            size="lg"
-            value={formData.lastName}
+            value={formData.name}
             onChange={handleChange}
           />
           <MDBInput
@@ -157,10 +140,10 @@ const UserRegistration = () => {
       </MDBCol>
       <MDBCol sm='6' className='d-none d-sm-block px-0'>
         <img
-          src="images/notebook-with-list.jpg"
+          src="images/EventManagement.jpg"
           alt="Register"
           className="w-100 h-100"
-          style={{ objectFit: 'cover', objectPosition: 'left', marginTop:'40px' }}
+          style={{ objectPosition: 'left', marginTop:'40px' }}
         />
       </MDBCol>
     </MDBRow>

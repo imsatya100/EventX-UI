@@ -17369,3 +17369,6 @@ pre[class*=language-] {
   #webpack-dev-server-client-overlay {
     display: none !important;
   }
+  .carousel-item {
+    max-height: 500px;
+  }

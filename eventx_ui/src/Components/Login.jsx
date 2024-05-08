@@ -18,6 +18,7 @@ const Login = () => {
     password: ''
   });
   const [error, setError] = useState('');
+  const [variant, setVariant] = useState('danger');
   const [showModal, setShowModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const message = useSelector(state => state.forwardMessage);
@@ -61,21 +62,26 @@ const Login = () => {
     }
     // If there are no errors, proceed with login
     console.log('Form Submitted:', formData);
-      try {
         // Make POST request to your local URL
+    axios.post('http://localhost:8040/api/v1/users/login', formData)
+         .then((res) => { 
+            console.log(res.status);
+            if (res.status === 200) {
+              setShowAlert(true)
+              setVariant('success');
+              setError(res.data);
+              console.log(res);
+            } else {
+              setShowAlert(true)
+              setError('Please enter correct username and password.');
+            }
+         })
+         .catch((e) => {
+            console.error('Error:', e);
+            setShowAlert(true)
+            setError('An error occurred while processing your request.');
+         });
         
-        const response = axios.post('http://localhost:8040/api/v1/users/login', formData);
-        setShowAlert(true)
-        if (response.status === 200) {
-          console.log('Login Successful:');
-        } else {
-          setError('Please enter correct username and password.');
-          
-        }
-      } catch (error) {
-        setShowAlert(true)
-        setError('An error occurred while processing your request.');
-      }
   };
   
   return (
@@ -87,7 +93,7 @@ const Login = () => {
           </div>
         <form onSubmit={handleLogin}> 
 
-        {showAlert && <Alert variant="danger">{error}</Alert>}
+        {showAlert && <Alert variant={variant}>{error}</Alert>}
         {message && <Alert variant="info">{message}</Alert>}
           <div className='d-flex flex-column justify-content-center h-custom-2 w-75 pt-4'>
             <h3 className="fw-normal mb-3 ps-5 pb-3" style={{ letterSpacing: '1px' }}>Log in</h3>
@@ -133,10 +139,10 @@ const Login = () => {
         </MDBCol>
         <MDBCol sm='6' className='d-none d-sm-block px-0'>
           <img
-            src="images/notebook-with-list.jpg"
+            src="images/EventManagement.jpg"
             alt="Login"
             className="w-100 h-100"
-            style={{ objectFit: 'cover', objectPosition: 'left', marginTop:'40px' }}
+            style={{ objectPosition: 'left', marginTop:'40px' }}
           />
         </MDBCol>
       </MDBRow>

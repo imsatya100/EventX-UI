@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
+import EventCarousel from './EventCarousel';
 
 const HomePage = () => {
     const [text, setText] = useState('');
     const [index, setIndex] = useState(0);
     const [flag, setFlag] = useState(1);
     const animationText = 'Manage Your Events';
+    
 
     useEffect(() => {
         changeText(animationText, index, flag);
@@ -24,6 +26,7 @@ const HomePage = () => {
 
   return (
     <Container style={{ padding: '80px 0' }}>
+      <EventCarousel/>
       <Row>
         <h1 className="display-2 text-center animated fadeInDown">
         <span className="animated">{text}<span className="animating-cursor" style={{ fontWeight: 100 }}>|</span></span>
@@ -38,9 +41,6 @@ const HomePage = () => {
             Whether you're arranging a birthday bash, a corporate conference, or a wedding extravaganza, we've got you covered. 
             Dive into our interactive event to-do list and make planning your next big event a stress-free experience!
         </p> 
-        <div className="text-center">
-          <span className="badge" style={{ background: '#EEE', color: '#666' }}>v1.0.0 / 26 April, 2024</span>
-        </div>
       </Row>
     </Container>
   );
